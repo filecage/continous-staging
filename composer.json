@@ -6,8 +6,7 @@
         "Tholabs\\ContinousStaging\\": "src"
     },
     "require": {
-        "czproject/git-php": "^3.14",
-        "dintel/php-github-webhook": "^0.2"
+        "czproject/git-php": "^3.14"
     },
     "license": "UNLICENSED",
     "authors": [
