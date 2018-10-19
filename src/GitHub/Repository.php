@@ -42,19 +42,9 @@
         private $url;
 
         /**
-         * @var string
+         * @var CloneUrls
          */
-        private $gitUrl;
-
-        /**
-         * @var string
-         */
-        private $sshUrl;
-
-        /**
-         * @var string
-         */
-        private $httpCloneUrl;
+        private $cloneUrls;
 
         /**
          * @param Payload $payload
@@ -62,10 +52,11 @@
          * @return Repository
          */
         static function createFromPayload (Payload $payload) : Repository {
+            $cloneUrls = CloneUrls::createFromPayload($payload);
             $owner = Contributor::createFromPayload($payload->getSubPayload('owner'));
             $payload = $payload->getPayloadAsArray();
 
-            return new Repository($payload['id'], $payload['node_id'], $payload['name'], $payload['full_name'], $payload['private'], $owner, $payload['url'], $payload['git_url'], $payload['ssh_url'], $payload['clone_url']);
+            return new Repository($payload['id'], $payload['node_id'], $payload['name'], $payload['full_name'], $payload['private'], $owner, $payload['url'], $cloneUrls);
         }
 
         /**
@@ -76,11 +67,9 @@
          * @param bool $private
          * @param Contributor $owner
          * @param string $url
-         * @param string $gitUrl
-         * @param string $sshUrl
-         * @param string $httpCloneUrl
+         * @param CloneUrls $cloneUrls
          */
-        function __construct (int $id, string $nodeId, string $name, string $fullName, bool $private, Contributor $owner, string $url, string $gitUrl, string $sshUrl, string $httpCloneUrl) {
+        function __construct (int $id, string $nodeId, string $name, string $fullName, bool $private, Contributor $owner, string $url, CloneUrls $cloneUrls) {
             $this->id = $id;
             $this->nodeId = $nodeId;
             $this->name = $name;
@@ -88,9 +77,7 @@
             $this->private = $private;
             $this->owner = $owner;
             $this->url = $url;
-            $this->gitUrl = $gitUrl;
-            $this->sshUrl = $sshUrl;
-            $this->httpCloneUrl = $httpCloneUrl;
+            $this->cloneUrls = $cloneUrls;
         }
 
         /**
@@ -143,24 +130,10 @@
         }
 
         /**
-         * @return string
+         * @return CloneUrls
          */
-        function getGitUrl () : string {
-            return $this->gitUrl;
-        }
-
-        /**
-         * @return string
-         */
-        function getSshUrl () : string {
-            return $this->sshUrl;
-        }
-
-        /**
-         * @return string
-         */
-        function getHttpCloneUrl () : string {
-            return $this->httpCloneUrl;
+        function getCloneUrls () : CloneUrls {
+            return $this->cloneUrls;
         }
 
     }
