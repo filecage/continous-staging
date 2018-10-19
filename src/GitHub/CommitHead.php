@@ -3,6 +3,7 @@
     namespace Tholabs\ContinousStaging\GitHub;
 
     use DateTime;
+    use Tholabs\ContinousStaging\GitHub\Webhook\Payload;
 
     class CommitHead {
 
@@ -22,6 +23,17 @@
          * @var string
          */
         private $url;
+
+        /**
+         * @param Payload $payload
+         *
+         * @return CommitHead
+         */
+        static function createFromPayload (Payload $payload) : CommitHead {
+            $payload = $payload->getPayloadAsArray();
+
+            return new CommitHead($payload['id'], $payload['message'], new DateTime($payload['timestamp']), $payload['url']);
+        }
 
         /**
          * @param string $id

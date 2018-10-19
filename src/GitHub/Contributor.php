@@ -2,6 +2,8 @@
 
     namespace Tholabs\ContinousStaging\GitHub;
 
+    use Tholabs\ContinousStaging\GitHub\Webhook\Payload;
+
     class Contributor {
 
         /**
@@ -18,6 +20,17 @@
          * @var string
          */
         private $username;
+
+        /**
+         * @param Payload $payload
+         *
+         * @return Contributor
+         */
+        static function createFromPayload (Payload $payload) : Contributor {
+            $payload = $payload->getPayloadAsArray();
+
+            return new Contributor($payload['name'], $payload['email'], $payload['username'] ?? null);
+        }
 
         /**
          * @param string $name

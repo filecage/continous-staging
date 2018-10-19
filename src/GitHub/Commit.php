@@ -2,6 +2,8 @@
 
     namespace Tholabs\ContinousStaging\GitHub;
 
+    use Tholabs\ContinousStaging\GitHub\Webhook\Payload;
+
     class Commit {
 
         /**
@@ -33,6 +35,23 @@
          * @var Filelist
          */
         private $modifiedFiles;
+
+        /**
+         * @param Payload $payload
+         *
+         * @return Commit
+         */
+        static function createFromPayload (Payload $payload) : Commit {
+            $commitHead = CommitHead::createFromPayload($payload);
+            $author = Contributor::createFromPayload($payload->getSubPayload('author'));
+            $committer = Contributor::createFromPayload($payload->getSubPayload('committer'));
+
+            $addedFiles = new Filelist(...$payload->getPayloadAsArray()['added']);
+            $removedFiles = new Filelist(...$payload->getPayloadAsArray()['removed']);
+            $modifiedFiles = new Filelist(...$payload->getPayloadAsArray()['modified']);
+
+            return new Commit($commitHead, $author, $committer, $addedFiles, $removedFiles, $modifiedFiles);
+        }
 
         /**
          * @param CommitHead $head
