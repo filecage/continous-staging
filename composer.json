@@ -1,0 +1,17 @@
+{
+    "name": "tholabs/continous-staging",
+    "description": "An endpoint for GitHub webhooks that automatically clones and pulls branches and tags",
+    "type": "project",
+    "require": {
+        "czproject/git-php": "^3.14",
+        "dintel/php-github-webhook": "^0.4"
+    },
+    "license": "UNLICENSED",
+    "authors": [
+        {
+            "name": "David Beuchert",
+            "email": "mail@dbeuchert.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
