@@ -22,7 +22,7 @@
          * @var Header
          */
         private $header;
-        
+
         /**
          * @var Payload
          */
@@ -43,7 +43,7 @@
         function getEvent () : Event {
             switch ($this->header->getEvent()) {
                 case PushEvent::EVENT_KEY:
-                    return new PushEvent($this->payload);
+                    return PushEvent::createFromPayload($this->payload->getSubPayload('payload'));
             }
 
             return new Event($this->header->getEvent(), $this->payload);
