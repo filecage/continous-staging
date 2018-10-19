@@ -2,6 +2,9 @@
     "name": "tholabs/continous-staging",
     "description": "An endpoint for GitHub webhooks that automatically clones and pulls branches and tags",
     "type": "project",
+    "autoload": {
+        "Tholabs\\ContinousStaging\\": "src"
+    },
     "require": {
         "czproject/git-php": "^3.14",
         "dintel/php-github-webhook": "^0.2"
