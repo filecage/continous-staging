@@ -22,6 +22,7 @@
          * @var Header
          */
         private $header;
+        
         /**
          * @var Payload
          */
