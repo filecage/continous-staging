@@ -46,7 +46,7 @@
                     return PushEvent::createFromPayload($this->payload->getSubPayload('payload'));
             }
 
-            return new Event($this->header->getEvent(), $this->payload);
+            return new Event($this->header->getEvent());
         }
 
         /**
