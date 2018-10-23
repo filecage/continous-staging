@@ -2,6 +2,8 @@
 
     namespace Tholabs\ContinousStaging\GitHub\Webhook;
 
+    use Tholabs\ContinousStaging\Exceptions\BadWebhookRequest;
+
     class Signature {
 
         /**
@@ -17,9 +19,13 @@
          * @param string $signatureHeader
          *
          * @return Signature
+         * @throws BadWebhookRequest
          */
         static function createFromHeaderString (string $signatureHeader) : Signature {
             $explodedHeader = explode('=', $signatureHeader);
+            if ($explodedHeader[0] === null || $explodedHeader[1] === null) {
+                throw new BadWebhookRequest('Signature header is invalid');
+            }
 
             return new Signature($explodedHeader[0], $explodedHeader[1]);
         }

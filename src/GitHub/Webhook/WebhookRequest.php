@@ -2,6 +2,7 @@
 
     namespace Tholabs\ContinousStaging\GitHub\Webhook;
 
+    use Tholabs\ContinousStaging\Exceptions\BadWebhookRequest;
     use Tholabs\ContinousStaging\GitHub\Events\Event;
     use Tholabs\ContinousStaging\GitHub\Events\PushEvent;
 
@@ -9,11 +10,25 @@
 
         /**
          * @return WebhookRequest
+         * @throws BadWebhookRequest
          */
         static function createFromRequest () {
             $signature = Signature::createFromHeaderString($_SERVER['HTTP_X_HUB_SIGNATURE'] ?? '');
-            $header = new Header($_SERVER['HTTP_X_GITHUB_EVENT'] ?? '', $_SERVER['HTTP_X_GITHUB_DELIVERY'] ?? '', $signature);
-            $payload = new Payload(file_get_contents('php://input'));
+            if (!isset($_SERVER['HTTP_X_GITHUB_EVENT'])) {
+                throw new BadWebhookRequest('Missing X-GitHub-Event header');
+            }
+
+            if (!isset($_SERVER['HTTP_X_GITHUB_DELIVERY'])) {
+                throw new BadWebhookRequest('Missing X-GitHub-Delivery header');
+            }
+
+            $header = new Header($_SERVER['HTTP_X_GITHUB_EVENT'], $_SERVER['HTTP_X_GITHUB_DELIVERY'], $signature);
+            $contentType = $_SERVER['CONTENT_TYPE'] ?? null;
+            if (strtolower($contentType) === 'application/json') {
+                $payload = new Payload(file_get_contents('php://input'));
+            } else {
+                throw new BadWebhookRequest('Unsupported content-type, please use application/json');
+            }
 
             return new WebhookRequest($header, $payload);
         }
