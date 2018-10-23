@@ -6,7 +6,8 @@
         "psr-4": {"Tholabs\\ContinousStaging\\": "./src"}
     },
     "require": {
-        "czproject/git-php": "^3.14"
+        "czproject/git-php": "^3.14",
+        "tholabs/slimmer": "dev-master"
     },
     "license": "UNLICENSED",
     "authors": [
