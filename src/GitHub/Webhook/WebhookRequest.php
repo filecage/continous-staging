@@ -43,7 +43,7 @@
         function getEvent () : Event {
             switch ($this->header->getEvent()) {
                 case PushEvent::EVENT_KEY:
-                    return PushEvent::createFromPayload($this->payload->getSubPayload('payload'));
+                    return PushEvent::createFromPayload($this->payload);
             }
 
             return new Event($this->header->getEvent());
